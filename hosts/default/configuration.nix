@@ -8,7 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      home-manager.nixosModules.default
+      home-manager.nixosModules.home-manager
     ];
 
   # Bootloader.
@@ -50,7 +50,9 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-
+  services.mullvad-vpn = {
+	enable = true;
+  };
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "gb";
@@ -83,7 +85,10 @@
   # services.xserver.libinput.enable = true;
 
   # hosts/default/configuration.nix
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.libvirtd.enable = true;
 
+  boot.kernelModules = ["kvm" "kvm-amd"];
 
 
   # Define user account
@@ -93,18 +98,17 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       # thunderbird (uncomment if needed)
-      quickemu
       firefox
     ];
   };
 
-  
-  home-manager = {
-    extraSpecialArgs = { inherit home-manager; };
-    users = {
-	"hhgsxnix" = import ./home.nix;
-};
-  };
+  home-manager.users.hhgsxnix = import ./home.nix;
+ # home-manager = {
+ #   extraSpecialArgs = { inherit home-manager; };
+ #   users = {
+#	"hhgsxnix" = import ./home.nix;
+#};
+ # };
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -115,12 +119,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     neovim
-    kitty
-    git
-    quickemu
     firefox
   ];
 

@@ -18,7 +18,10 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs;[
-
+	kitty
+	vim
+	git
+	mullvad-vpn
   	quickemu
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
@@ -75,4 +78,13 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  
+  programs.git = {
+	enable = true;
+	userName = "hhgsx";
+	userEmail = "jamesedwin204@gmail.com";
+  };
+
+  
+
 }
